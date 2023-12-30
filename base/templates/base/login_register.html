@@ -56,6 +56,8 @@
 </head>
 <body>
 
+    {% if Page == 'login' %}
+<div>
     <form method="POST" action="">
         {% csrf_token %}
         <label>Username:</label>
@@ -66,6 +68,20 @@
 
         <input type="submit" value="Login" />
     </form>
+    <p> Haven't Signed Up</p>
+    <a href="{% url 'register' %}"> Register </a>
+</div>
+    {% else %}
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Register" />
+    </form>
+    <p> Alredy Signed Up</p>
+    <a href="{% url 'login' %}"> Login</a>
+</div>
+    {% endif %}
 
     {% if messages %}
     <ul class="messages">
