@@ -1,0 +1,40 @@
+<h2>rooms available --</h2>
+<h2>
+  <a
+    href="{% url 'create-room' %}"
+    style="text-decoration: none; color: #007bff"
+    >create_room</a
+  >
+</h2>
+{% for room in rooms %}
+<div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px">
+  <h5>
+    {{room.id}} --
+    <a
+      href="{% url 'room' room.id %}"
+      style="text-decoration: none; color: #007bff"
+      >{{room.name}}</a
+    >
+  </h5>
+  <span> <a href = "{% url 'user-profile' room.host.id %}"> @{{ room.host.username }} </a> </span>
+
+  {% if request.user == room.host %}
+  <h5>
+    <a
+      href="{% url 'update-room' room.id %}"
+      style="text-decoration: none; color: #007bff"
+      >edit_room</a
+    >
+  </h5>
+  <h5>
+    <a
+      href="{% url 'delete-room' room.id %}"
+      style="text-decoration: none; color: #007bff"
+      >delete_room</a
+    >
+  </h5>
+  {% endif %}
+ <hr>
+  <small>{{ room.topic.name }}</small>
+</div>
+{% endfor %}

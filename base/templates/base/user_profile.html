@@ -1,0 +1,15 @@
+<h3> {{ user.name }}</h3>
+
+<div style="display: flex">
+    <div style="flex: 1; padding: 20px; background-color: #f0f0f0">
+      {% include 'base/topic_component.html' %}
+    </div>
+
+    <div style="flex: 2; padding: 20px">
+      {% include 'base/feed_component.html' %}
+    </div>
+
+    <div style="flex: 0.75; padding: 20px">
+      {% include 'base/recent_activity.html' %}
+    </div>
+</div>    

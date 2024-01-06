@@ -1,58 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
-</head>
-<body style="font-family: Arial, sans-serif; margin: 0; padding: 0;">
+  </head>
+  <body style="font-family: Arial, sans-serif; margin: 0; padding: 0">
     <h1>Home</h1>
     <form method="GET" action="{% url 'home' %}">
-        <input type="text" name="q" placeholder="Search Rooms...">
+      <input type="text" name="q" placeholder="Search Rooms..." />
     </form>
 
     {% if request.user.is_authenticated %}
-    <p> Hello {{ request.user.username }} </p>
+    <p>Hello {{ request.user.username }}</p>
     <a href="{% url 'logout' %}"> Logout </a>
     {% else %}
     <a href="{% url 'login' %}"> Login </a>
     {% endif %}
     <hr />
-    
-    <div style="display: flex;">
 
-        <div style="flex: 1; padding: 20px; background-color: #f0f0f0;">
-            <h3>Browse topics</h3>
-            <hr>
+    <div style="display: flex">
+      <div style="flex: 1; padding: 20px; background-color: #f0f0f0">
+        {% include 'base/topic_component.html' %}
+      </div>
 
-            <a href = "{% url 'home' %}"> All </a>
+      <div style="flex: 2; padding: 20px">
+        {% include 'base/feed_component.html' %}
+      </div>
 
-            {% for topic in topics %}
-                <div>
-                    <a href = "{% url 'home' %}?q={{ topic.name }}"> {{ topic.name }} </a>
-                </div>
-            {% endfor %}
-        </div>
-
-        <div style="flex: 2; padding: 20px;">
-            <h2> rooms available -- </h2>
-            <h2><a href="{% url 'create-room' %}" style="text-decoration: none; color: #007BFF;">create_room</a></h2>
-            {% for room in rooms %}
-                <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
-                    <h5>{{room.id}} -- <a href="{% url 'room' room.id %}" style="text-decoration: none; color: #007BFF;">{{room.name}}</a></h5>
-                    <span>@{{ room.host.username }}</span>
-
-                    {% if request.user == room.host %}
-                    <h5><a href="{% url 'update-room' room.id %}" style="text-decoration: none; color: #007BFF;">edit_room</a></h5>
-                    <h5><a href="{% url 'delete-room' room.id %}" style="text-decoration: none; color: #007BFF;">delete_room</a></h5>
-                    {% endif %}
-                    <small>{{ room.topic.name }}</small>
-                </div>
-            {% endfor %}
-
-        </div>
-
+      <div style="flex: 0.75; padding: 20px">
+        {% include 'base/recent_activity.html' %}
+      </div>
     </div>
-
-</body>
+  </body>
 </html>

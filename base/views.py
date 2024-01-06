@@ -63,8 +63,9 @@ def home(request):
     room = Room.objects.filter(Q(topic__name__icontains = q) | Q(name__icontains = q) | Q(description__icontains = q))
     room_count = room.count()
     topic = Topic.objects.all()
+    room_messages = Message.objects.filter(Q(room__topic__name__icontains = q))
     
-    context = {'rooms' : room, 'topics' : topic, 'room_count' : room_count}  
+    context = {'rooms' : room, 'topics' : topic, 'room_count' : room_count, 'room_messages' : room_messages}  
     return render(request, 'base/home.html', context)
 
 def room(request, pk):
@@ -126,5 +127,28 @@ def DeleteRoom(request, pk):
         return redirect('home')
     
     return render(request, 'base/delete.html', {'obj' : room})
-        
+
+def UserProfile(request, pk):
+    user = User.objects.get(id=pk)
+    rooms = user.room_set.all()
+    room_messages = user.message_set.all()
+    topics = Topic.objects.all()
+    
+    context = {'user': user, 'rooms': rooms, 'room_messages' : room_messages, 'topics' : topics}
+    
+    return render(request, 'base/user_profile.html', context)
+            
+@login_required(login_url='/login')
+def DeleteMessage(request, pk):
+    message = Message.objects.get(id=pk)
+    room = message.room
+    
+    if request.user != message.user:
+        return HttpResponse('You are not allowed to delete this message')
+    
+    if request.method == 'POST':
+        message.delete()
+        return redirect('home')
+    
+    return render(request, 'base/delete.html', {'obj' : message})
         
