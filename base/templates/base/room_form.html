@@ -1,80 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Form Title</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            padding: 20px;
-            background-color: #f8f9fa;
-            margin: 0;
-        }
+{% extends 'main.html' %}
 
-        form {
-            border: 1px solid #ddd;
-            padding: 20px;
-            max-width: 400px;
-            margin: 0 auto;
-            background-color: #fff;
-            transition: box-shadow 0.3s ease-in-out;
-        }
+{% block content %}
+<main class="create-room layout">
+  <div class="container">
+    <div class="layout__box">
+      <div class="layout__boxHeader">
+        <div class="layout__boxTitle">
+          <a href="{{request.META.HTTP_REFERER}}">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <title>arrow-left</title>
+              <path
+                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
+              </path>
+            </svg>
+          </a>
+          <h3>Create/Update Fight Room</h3>
+        </div>
+      </div>
+      <div class="layout__body">
+        <form class="form" action="" method="POST">
+          {% csrf_token %}
 
-        form:hover {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+          <div class="form__group">
+            <label for="room_topic">Enter a Fight</label>
+            <input required type="text" value="{{room.topic.name}}" name="topic" list="topic-list" />
+            <datalist id="topic-list">
+              <select id="room_topic">
+                {% for topic in topics %}
+                <option value="{{topic.name}}">{{topic.name}}</option>
+                {% endfor %}
+              </select>
+            </datalist>
+          </div>
 
-        div {
-            margin-bottom: 20px;
-            text-align: left;
-        }
 
-        input[type="text"],
-        input[type="password"],
-        input[type="email"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-        }
+          <div class="form__group">
+            <label for="room_name">Room Name</label>
+            {{form.name}}
+          </div>
 
-        input[type="submit"] {
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-        }
+          <div class="form__group">
+            <label for="room_description">Room Description</label>
+            {{form.description}}
+          </div>
 
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
-    </style>
-</head>
-<body>
+          <!-- <div class="form__group">
+            <label for="room_topic">Topic</label>
+            <input required type="text" name="topic" id="room_topic" list="topic-list" />
+            <datalist id="topic-list">
+              <select id="room_topic">
+                <option value="">Select your topic</option>
+                <option value="Python">Python</option>
+                <option value="Django">Django</option>
+              </select>
+            </datalist>
 
-    <div>
+          </div> -->
 
-        <form method="POST" action="">
 
-            {% csrf_token %}
-
-            <div>
-                {{ form.as_p }}
-            </div>
-
-            <input type="submit" value="Submit">
-
-            <!-- You can add additional styles or modify as needed -->
-
+          <div class="form__action">
+            <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+            <button class="btn btn--main" type="submit">Submit</button>
+          </div>
         </form>
-
+      </div>
     </div>
-
-</body>
-</html>
+  </div>
+</main>
+{% endblock content %}
